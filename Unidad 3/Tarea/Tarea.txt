@@ -1,0 +1,14 @@
+Cómo funcionan las redes neuronales
+
+Qué es un perceptron
+
+Concepto de Machine Learning
+
+Bases de datos vecotoriales
+
+
+Que compile en la computadora el trabajo de clase
+
+
+Tarea para el viernes 8/11/2024:
+Tomar cada uno de los errores que están en el documento y hacer un ejemplo de cada uno de ellos

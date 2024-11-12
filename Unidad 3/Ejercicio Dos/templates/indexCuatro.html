@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú</title>
+</head>
+<body>
+    <h1>Menú</h1>
+    <form action="/" method="post">
+        <label for="opcion">Selecciona una opción:</label>
+        <select id="opcion" name="opcion" required>
+            {% for key, value in opciones.items() %}
+                <option value="{{ key }}">{{ value }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Seleccionar</button>
+    </form>
+
+    {% if seleccion %}
+        <h2>Resultado de Selección</h2>
+        <p>{{ seleccion }}</p>
+    {% endif %}
+</body>
+</html>

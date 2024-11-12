@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Ventas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        select, input, button {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            width: 100%;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sistema de Ventas</h1>
+    
+    <form id="ventaForm">
+        <label for="codigo">Producto:</label>
+        <select id="codigo" name="codigo" required>
+            <option value="" disabled selected>Selecciona un producto</option>
+            {% for producto in productos %}
+                <option value="{{ producto.codigo }}">{{ producto.nombre }} - ${{ producto.calcular_precio_venta() }} (Existencias: {{ producto.existencias }})</option>
+            {% endfor %}
+        </select>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" min="1" placeholder="Ingresa la cantidad" required>
+
+        <button type="submit">Realizar Venta</button>
+    </form>
+
+    <div class="result" id="resultado"></div>
+
+    <script>
+        document.getElementById("ventaForm").onsubmit = async function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            
+            const response = await fetch("/vender", {
+                method: "POST",
+                body: formData
+            });
+
+            const resultadoDiv = document.getElementById("resultado");
+
+            if (response.ok) {
+                const data = await response.json();
+                resultadoDiv.innerHTML = `
+                    <p>Venta realizada: ${data.cantidad} unidades de ${data.nombre} por un total de $${data.total_venta.toFixed(2)}</p>
+                    <p>Existencias restantes: ${data.existencias_restantes}</p>
+                `;
+            } else {
+                const errorData = await response.json();
+                resultadoDiv.innerHTML = `<p style="color:red;">Error: ${errorData.error}</p>`;
+            }
+        };
+    </script>
+</body>
+</html>
+

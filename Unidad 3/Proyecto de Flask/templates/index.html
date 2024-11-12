@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas de Números</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-md w-96">
+        <h1 class="text-2xl font-bold mb-6 text-center">Estadísticas de Números</h1>
+        <form id="numberForm" class="space-y-4">
+            {% for i in range(1, 6) %}
+            <div>
+                <label for="number{{ i }}" class="block text-sm font-medium text-gray-700">Número {{ i }}</label>
+                <input type="number" id="number{{ i }}" name="number{{ i }}" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            {% endfor %}
+            <button type="submit"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Calcular
+            </button>
+        </form>
+        <div id="results" class="mt-6 hidden">
+            <h2 class="text-xl font-semibold mb-2">Resultados:</h2>
+            <p>Número mayor: <span id="mayor" class="font-bold"></span></p>
+            <p>Número menor: <span id="menor" class="font-bold"></span></p>
+            <p>Promedio: <span id="promedio" class="font-bold"></span></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('numberForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch('/', {
+                method: 'POST',
+                body: new FormData(this)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('mayor').textContent = data.mayor;
+                document.getElementById('menor').textContent = data.menor;
+                document.getElementById('promedio').textContent = data.promedio.toFixed(2);
+                document.getElementById('results').classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
